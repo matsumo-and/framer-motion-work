@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import BgVideo from "../components/bg_video";
+import Header from "../components/header";
 
 const Home: NextPage = () => {
   return (
@@ -12,9 +13,12 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <BgVideo />
-
-      <div className="w-full h-fill z-10 bg-indigo-50">aaa</div>
+      <main className="w-screen h-screen">
+        <Header />
+        <BgVideo />
+        <div className="w-screen h-screen bg-white">aaa</div>
+        <div className="w-screen h-screen bg-indigo-50">aaa</div>
+      </main>
     </>
   );
 };
