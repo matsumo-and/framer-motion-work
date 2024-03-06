@@ -1,10 +1,33 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import React from "react";
-import BgVideo from "../components/bg_video";
+import React, { useEffect, useState } from "react";
+import BgVideo from "../components/BgVideo";
 import Header from "../components/header";
 
 const Home: NextPage = () => {
+  const [opacity, setOpacity] = useState<number>(0);
+  const [blur, setBlur] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY <= window.screen.height / 2) {
+        setOpacity(0);
+        setBlur(false);
+      }
+
+      // 一画面分スクロールした時の動き
+      if (window.scrollY > window.screen.height / 2) {
+        setOpacity(50);
+        setBlur(true);
+        console.log(blur);
+      }
+    };
+
+    window.addEventListener("scroll", () => onScroll());
+
+    return () => window.removeEventListener("scroll", () => onScroll());
+  }, []);
+
   return (
     <>
       <Head>
@@ -14,10 +37,15 @@ const Home: NextPage = () => {
       </Head>
 
       <main className="w-screen h-screen">
-        <Header />
-        <BgVideo />
-        <div className="w-screen h-screen bg-white">aaa</div>
-        <div className="w-screen h-screen bg-indigo-50">aaa</div>
+        <Header opacity={opacity} />
+        <BgVideo blur={blur} />
+        <div
+          id="top-bg-video-spacer"
+          className={`w-screen h-screen bg-tranceparent ease-in duration-100
+        `}
+        ></div>
+        <div className="w-screen h-screen bg-white bg-opacity-50">aaa</div>
+        <div className="w-screen h-screen bg-indigo-50 bg-opacity-50">aaa</div>
       </main>
     </>
   );
