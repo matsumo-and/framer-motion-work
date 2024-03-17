@@ -1,8 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import BgVideo from "../components/BgVideo";
 import Header from "../components/header";
+import { motion, useInView } from "framer-motion";
 
 const Home: NextPage = () => {
   const [opacity, setOpacity] = useState<number>(0);
@@ -39,13 +40,51 @@ const Home: NextPage = () => {
       <main className="w-screen h-screen">
         <Header opacity={opacity} />
         <BgVideo blur={blur} />
+
         <div
           id="top-bg-video-spacer"
+          className={`
+          w-screen h-screen bg-tranceparent ease-in duration-100
+          font-bold text-5xl text-gray-900
+          flex items-center justify-center
+        `}
+        >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+          >
+            <h1>This is TOP Content.</h1>
+          </motion.div>
+        </div>
+
+        <div className="w-full h-full p-10">
+          <motion.div
+            initial={{ opacity: 0, width: 0, x: 10 }}
+            whileInView={{ opacity: 1, width: "100%", x: 0 }}
+            transition={{ duration: 1, origin: 1 }}
+            //whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.5 }}
+          >
+            <div className="bg-white bg-opacity-10 rounded p-5">
+              <h1 className="text-xl font-bold">About this site.</h1>
+              <div>framer-motion-work is my etude</div>
+            </div>
+
+            <div className="p-3"></div>
+
+            <div className="bg-white bg-opacity-10 rounded p-5">
+              <h1 className="text-xl font-bold">About this member.</h1>
+              <div>framer-motion-work is my etude</div>
+            </div>
+          </motion.div>
+        </div>
+
+        <div
+          id="bottom-spacer"
           className={`w-screen h-screen bg-tranceparent ease-in duration-100
         `}
         ></div>
-        <div className="w-screen h-screen bg-white bg-opacity-50">aaa</div>
-        <div className="w-screen h-screen bg-indigo-50 bg-opacity-50">aaa</div>
       </main>
     </>
   );

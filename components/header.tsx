@@ -9,12 +9,13 @@ const Header: FC<HeaderProps> = ({ opacity }) => {
     <div
       className={`w-screen h-[100px] fixed
       flex items-center px-[50px]
-      font-bold text-xl
-      bg-gray-300 bg-opacity-${opacity}
+      font-bold text-xl text-gray-900
+      ${opacity ? "bg-gray-300 bg-opacity-" + opacity : "bg-transparent"}
+
       ease-in duration-500
       `}
     >
-      framer-option-work
+      framer-motion-work
     </div>
   );
 };
