@@ -4,12 +4,16 @@ import React, { useEffect, useRef, useState } from "react";
 import BgVideo from "../components/BgVideo";
 import Header from "../components/header";
 import { motion, useInView } from "framer-motion";
+import { Member, Members } from "../types/member";
+import MemberCard from "../components/memberCard";
 
 const Home: NextPage = () => {
   const [opacity, setOpacity] = useState<number>(0);
   const [blur, setBlur] = useState<boolean>(false);
+  const [data, setData] = useState<Members | null>(null);
 
   useEffect(() => {
+    // スクロールイベント
     const onScroll = () => {
       if (window.scrollY <= window.screen.height / 2) {
         setOpacity(0);
@@ -23,6 +27,22 @@ const Home: NextPage = () => {
         console.log(blur);
       }
     };
+
+    // memberデータの取得
+    const fetchData = async () => {
+      try {
+        const response = await fetch("/json/member.json");
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const jsonData = await response.json();
+        setData(jsonData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
 
     window.addEventListener("scroll", () => onScroll());
 
@@ -78,6 +98,25 @@ const Home: NextPage = () => {
               <div>framer-motion-work is my etude</div>
             </div>
           </motion.div>
+
+          <div className="w-full h-full mt-10 inline-flex overflow-scroll">
+            {data ? (
+              data.members.map((member) => (
+                <MemberCard
+                  id={member.id}
+                  firstName={member.firstName}
+                  lastName={member.lastName}
+                  firstKanaName={member.firstKanaName}
+                  lastKanaName={member.lastKanaName}
+                  age={member.age}
+                  introduce={member.introduce}
+                  imageName={member.imageName}
+                />
+              ))
+            ) : (
+              <p>Loading...</p>
+            )}
+          </div>
         </div>
 
         <div
